@@ -16,6 +16,7 @@ public class EnemyManager : MonoBehaviour
 
     public Text scoreText;
     public Image[] lifeImage;
+    public Image[] boomImage;
     public GameObject gameOverSet;
 
     // Start is called before the first frame update
@@ -38,7 +39,7 @@ public class EnemyManager : MonoBehaviour
 
         //UI Score Update
         Player playerStat = player.GetComponent<Player>();
-        scoreText.text = string.Format("{0:n0}", playerStat.score);
+        scoreText.text = string.Format("SCORE: {0:n0}", playerStat.score);
     }
 
     private void SpawnEnemy()
@@ -91,6 +92,20 @@ public class EnemyManager : MonoBehaviour
         for (int i = 0; i < life; i++)
         {
             lifeImage[i].color = new Color(1, 1, 1, 1);
+        }
+    }
+    public void UpdateBoomIcon(int boom)
+    {
+        //UI Life Disable
+        for (int i = 0; i < 3; i++)
+        {
+            boomImage[i].color = new Color(1, 1, 1, 0);
+        }
+
+        //UI Life Active
+        for (int i = 0; i < boom; i++)
+        {
+            boomImage[i].color = new Color(1, 1, 1, 1);
         }
     }
 

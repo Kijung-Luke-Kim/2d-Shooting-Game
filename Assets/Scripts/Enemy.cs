@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour
 
     public GameObject bulletObj1;
     public GameObject bulletObj2;
+    public GameObject itemCoin;
+    public GameObject itemPower;
+    public GameObject itemBoom;
     public GameObject player;
 
     public float maxFireDelay;
@@ -29,8 +32,10 @@ public class Enemy : MonoBehaviour
         rigid.velocity = Vector2.down * speed;
     }
 
-    void OnHit(int damage)
+    public void OnHit(int damage)
     {
+        if (health <= 0) return;
+
         health -= damage;
         spriteRenderer.sprite = sprites[1];
         Invoke("ReturnToUnhitSprite", 0.1f);
@@ -40,7 +45,27 @@ public class Enemy : MonoBehaviour
         {
             Player playerStat = player.GetComponent<Player>();
             playerStat.score += enemyValue;
-            Destroy(gameObject);
+
+            //아이템 드랍
+            int ran = Random.Range(0, 10);
+            if (ran < 5) //50%
+            {
+                Debug.Log("Not Item");
+            }
+            else if (ran < 8) //30%
+            {
+                Instantiate(itemCoin, transform.position, transform.rotation);
+            }
+            else if (ran < 9) //10%
+            {
+                Instantiate(itemPower, transform.position, transform.rotation);
+            }
+            else if (ran < 10) //10%
+            {
+                Instantiate(itemBoom, transform.position, transform.rotation);
+            }
+
+            Destroy(gameObject); 
         }
     }
 
@@ -97,7 +122,7 @@ public class Enemy : MonoBehaviour
             Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
 
             Vector3 dirToPlayer = player.transform.position - transform.position;
-            rigid.AddForce(dirToPlayer.normalized * 10, ForceMode2D.Impulse);
+            rigid.AddForce(dirToPlayer.normalized * 4, ForceMode2D.Impulse);
         }
         else if (enemyType == "L")
         {
