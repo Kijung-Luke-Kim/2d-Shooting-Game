@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public float curFireDelay;
 
     Animator anim;
+    public EnemyManager enemyMgr;
 
     private void Awake()
     {
@@ -86,9 +87,6 @@ public class Player : MonoBehaviour
                 break;
 
         }
-
-        
-
         curFireDelay = 0;
     }
 
@@ -134,6 +132,12 @@ public class Player : MonoBehaviour
                         break;
                 }
             }
+        }
+        else if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBullet")
+        {
+            enemyMgr.RespawnPlayerAfter2();
+            gameObject.SetActive(false);
+            
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
