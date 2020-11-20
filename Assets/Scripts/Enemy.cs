@@ -21,10 +21,34 @@ public class Enemy : MonoBehaviour
     void OnHit(int damage)
     {
         health -= damage;
+        spriteRenderer.sprite = sprites[1];
+        Invoke("ReturnToUnhitSprite", 0.1f);
+
 
         if (health <= 0)
         {
             Destroy(gameObject);
+        }
+    }
+
+    void ReturnToUnhitSprite()
+    {
+        spriteRenderer.sprite = sprites[0];
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "BulletBorder")
+        {
+            Destroy(gameObject);
+
+        }
+        else if (collision.gameObject.tag == "PlayerBullet")
+        {
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            OnHit(bullet.damage);
+
+            Destroy(collision.gameObject);
         }
     }
 
