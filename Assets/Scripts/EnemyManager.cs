@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -11,6 +13,10 @@ public class EnemyManager : MonoBehaviour
     public float maxSpawnDelay;
     public float curSpawnDelay;
     public GameObject player;
+
+    public Text scoreText;
+    public Image[] lifeImage;
+    public GameObject gameOverSet;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +35,10 @@ public class EnemyManager : MonoBehaviour
             maxSpawnDelay = Random.Range(0.5f, 3f);
             curSpawnDelay = 0;
         }
+
+        //UI Score Update
+        Player playerStat = player.GetComponent<Player>();
+        scoreText.text = string.Format("{0:n0}", playerStat.score);
     }
 
     private void SpawnEnemy()
@@ -65,5 +75,32 @@ public class EnemyManager : MonoBehaviour
     {
         player.transform.position = Vector3.down * 3.5f;
         player.SetActive(true);
+
+        Player playerStat = player.GetComponent<Player>();
+        playerStat.isAttacked = false;
+    }
+    public void UpdateLifeIcon(int life)
+    {
+        //UI Life Disable
+        for (int i = 0; i < 3; i++)
+        {
+            lifeImage[i].color = new Color(1, 1, 1, 0);
+        }
+
+        //UI Life Active
+        for (int i = 0; i < life; i++)
+        {
+            lifeImage[i].color = new Color(1, 1, 1, 1);
+        }
+    }
+
+    public void GameOver()
+    {
+        gameOverSet.SetActive(true);  
+    }
+
+    public void GameRetry()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 }

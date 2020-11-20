@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public string enemyType;
+    public int enemyValue;
 
     public float speed;
     public int health;
@@ -37,6 +38,8 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0)
         {
+            Player playerStat = player.GetComponent<Player>();
+            playerStat.score += enemyValue;
             Destroy(gameObject);
         }
     }
@@ -56,8 +59,8 @@ public class Enemy : MonoBehaviour
         else if (collision.gameObject.tag == "PlayerBullet")
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            OnHit(bullet.damage);
 
+            OnHit(bullet.damage);
             Destroy(collision.gameObject);
         }
     }

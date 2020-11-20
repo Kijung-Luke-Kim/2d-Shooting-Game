@@ -9,12 +9,15 @@ public class Player : MonoBehaviour
     bool isTouchBottom;
     bool isTouchLeft;
     bool isTouchRight;
+    public bool isAttacked;
 
     public GameObject bulletObj1;
     public GameObject bulletObj2;
 
-    public float speed;
+    public int life;
+    public int score;
     public int fireLevel;
+    public float speed;
     public float maxFireDelay;
     public float curFireDelay;
 
@@ -135,9 +138,21 @@ public class Player : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBullet")
         {
-            enemyMgr.RespawnPlayerAfter2();
-            gameObject.SetActive(false);
+            if (isAttacked) return;
+            isAttacked = true;
+            life--;
+            enemyMgr.UpdateLifeIcon(life);
+            if (life == 0)
+            {
+                enemyMgr.GameOver();
+            }
+            else
+            {
+                enemyMgr.RespawnPlayerAfter2();
+            }
             
+            gameObject.SetActive(false);
+            Destroy(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

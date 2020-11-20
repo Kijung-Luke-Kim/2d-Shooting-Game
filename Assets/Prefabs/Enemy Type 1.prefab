@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: L
+  enemyValue: 500
   speed: 1
   health: 50
   sprites:
@@ -155,5 +156,5 @@ MonoBehaviour:
   bulletObj2: {fileID: 4961196477804650676, guid: 9f801a2027252564986695dfcf4cd491,
     type: 3}
   player: {fileID: 0}
-  maxFireDelay: 1
+  maxFireDelay: 2
   curFireDelay: 0
