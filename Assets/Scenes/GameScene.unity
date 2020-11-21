@@ -1305,6 +1305,69 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 14}
   m_EdgeRadius: 0
+--- !u!1 &852985006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 852985008}
+  - component: {fileID: 852985007}
+  m_Layer: 0
+  m_Name: ObjectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &852985007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852985006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f7d4b3979d336b4bb9b7d2b33e5b2ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyLPrefab: {fileID: 6878974535470445432, guid: 664f7e2d69de0794ba783d82bed9421a,
+    type: 3}
+  enemyMPrefab: {fileID: 6917801993764445637, guid: bd50ab65f724466448411fd1bfe581f2,
+    type: 3}
+  enemySPrefab: {fileID: 4289634204168777119, guid: c59ab0afa544bcd4198ecdfdb299be54,
+    type: 3}
+  itemCoinPrefab: {fileID: 5431368629391740778, guid: ed80b4f7307fe84489b83c3a4b11fe14,
+    type: 3}
+  itemBoomPrefab: {fileID: 7712544149801628229, guid: 4f84b52684d1d3e4da6ce1672a54bdfa,
+    type: 3}
+  itemPowerPrefab: {fileID: 6584735319990402173, guid: fe8f33d2d17b1a84ea3f51faae390568,
+    type: 3}
+  bulletPlayerAPrefab: {fileID: 6493583988763943591, guid: 94ec2346cf2885c449f673934a72675d,
+    type: 3}
+  bulletPlayerBPrefab: {fileID: 4961196477804650676, guid: 83849b36949b2c64386a9e37da69a38f,
+    type: 3}
+  bulletEnemyAPrefab: {fileID: 4961196477804650676, guid: 77ac42de5b9644848a1b070326c234bc,
+    type: 3}
+  bulletEnemyBPrefab: {fileID: 4961196477804650676, guid: 9f801a2027252564986695dfcf4cd491,
+    type: 3}
+--- !u!4 &852985008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852985006}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.0971237, y: 4.153619, z: -6.4787035}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &871714147
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,6 +1724,7 @@ MonoBehaviour:
   maxFireDelay: 0.125
   curFireDelay: 0
   enemyMgr: {fileID: 1988889747}
+  objectManager: {fileID: 852985007}
 --- !u!212 &1177501246
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2601,9 +2665,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyObjects:
-  - {fileID: 6878974535470445432, guid: 664f7e2d69de0794ba783d82bed9421a, type: 3}
-  - {fileID: 6917801993764445637, guid: bd50ab65f724466448411fd1bfe581f2, type: 3}
-  - {fileID: 4289634204168777119, guid: c59ab0afa544bcd4198ecdfdb299be54, type: 3}
+  - 
+  - 
+  - 
   spawnSpots:
   - {fileID: 441661276}
   - {fileID: 1880218162}
@@ -2627,6 +2691,7 @@ MonoBehaviour:
   - {fileID: 812497804}
   - {fileID: 1895304320}
   gameOverSet: {fileID: 1978138149}
+  objectManager: {fileID: 852985007}
 --- !u!1 &2010397615
 GameObject:
   m_ObjectHideFlags: 0

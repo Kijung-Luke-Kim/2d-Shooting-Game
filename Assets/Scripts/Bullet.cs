@@ -22,7 +22,9 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.tag == "BulletBorder")
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
+
         }
     }
 }

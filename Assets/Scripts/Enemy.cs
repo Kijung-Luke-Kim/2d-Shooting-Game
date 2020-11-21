@@ -23,6 +23,8 @@ public class Enemy : MonoBehaviour
 
     SpriteRenderer spriteRenderer;
     Rigidbody2D rigid;
+
+    public ObjectManager objectManager;
  
 
     private void Awake()
@@ -30,6 +32,22 @@ public class Enemy : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
         rigid.velocity = Vector2.down * speed;
+    }
+
+    private void OnEnable()
+    {
+        switch (enemyType)
+        {
+            case "L":
+                health = 40;
+                break;
+            case "M":
+                health = 10;
+                break;
+            case "S":
+                health = 3;
+                break;
+        }
     }
 
     public void OnHit(int damage)
@@ -54,18 +72,23 @@ public class Enemy : MonoBehaviour
             }
             else if (ran < 8) //30%
             {
-                Instantiate(itemCoin, transform.position, transform.rotation);
+                GameObject itemCoin = objectManager.MakeObj("ItemCoin");
+                itemCoin.transform.position = transform.position;
             }
             else if (ran < 9) //10%
             {
-                Instantiate(itemPower, transform.position, transform.rotation);
+                GameObject itemPower = objectManager.MakeObj("ItemPower");
+                itemPower.transform.position = transform.position;
             }
             else if (ran < 10) //10%
             {
-                Instantiate(itemBoom, transform.position, transform.rotation);
+                GameObject itemBoom = objectManager.MakeObj("ItemBoom");
+                itemBoom.transform.position = transform.position;
             }
 
-            Destroy(gameObject); 
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
+            transform.rotation = Quaternion.identity;
         }
     }
 
@@ -78,15 +101,18 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag == "BulletBorder")
         {
-            Destroy(gameObject);
-
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
+            transform.rotation = Quaternion.identity;
         }
         else if (collision.gameObject.tag == "PlayerBullet")
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
 
             OnHit(bullet.damage);
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
+            gameObject.SetActive(false);
+            transform.rotation = Quaternion.identity;
         }
     }
 
@@ -118,7 +144,8 @@ public class Enemy : MonoBehaviour
 
         if (enemyType == "S")
         {
-            GameObject bullet = Instantiate(bulletObj1, transform.position, transform.rotation);
+            GameObject bullet = objectManager.MakeObj("BulletEnemyA");
+            bullet.transform.position = transform.position;
             Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
 
             Vector3 dirToPlayer = player.transform.position - transform.position;
@@ -126,13 +153,15 @@ public class Enemy : MonoBehaviour
         }
         else if (enemyType == "L")
         {
-            GameObject bulletL = Instantiate(bulletObj1, transform.position + Vector3.left * 0.3f, transform.rotation);
+            GameObject bulletL = objectManager.MakeObj("BulletEnemyA");
+            bulletL.transform.position = transform.position + Vector3.left * 0.3f;
             Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
 
             Vector3 dirToPlayerL = player.transform.position - (transform.position + Vector3.left * 0.3f);
             rigidL.AddForce(dirToPlayerL.normalized * 4, ForceMode2D.Impulse);
 
-            GameObject bulletR = Instantiate(bulletObj1, transform.position + Vector3.right * 0.3f, transform.rotation);
+            GameObject bulletR = objectManager.MakeObj("BulletEnemyA");
+            bulletR.transform.position = transform.position + Vector3.right * 0.3f;
             Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
 
             Vector3 dirToPlayerR = player.transform.position - (transform.position + Vector3.right * 0.3f);
