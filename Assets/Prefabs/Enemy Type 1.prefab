@@ -162,5 +162,10 @@ MonoBehaviour:
   itemBoom: {fileID: 7712544149801628229, guid: 4f84b52684d1d3e4da6ce1672a54bdfa,
     type: 3}
   player: {fileID: 0}
-  maxFireDelay: 2
+  maxFireDelay: 4
   curFireDelay: 0
+  objectManager: {fileID: 0}
+  enemyMgr: {fileID: 0}
+  patternIndex: 0
+  curPatternCount: 0
+  maxPatternCount: 

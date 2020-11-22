@@ -8,6 +8,12 @@ using System.IO;
 
 public class EnemyManager : MonoBehaviour
 {
+    public int stage;
+    public Animator stageAnim;
+    public Animator clearAnim;
+    public Animator fadeAnim;
+    public Transform playerPos;
+
     public string[] enemyObjects;
     public Transform[] spawnSpots;
 
@@ -29,8 +35,37 @@ public class EnemyManager : MonoBehaviour
     private void Awake()
     {
         spawnList = new List<Spawn>();
-        enemyObjects = new string[] { "EnemyS", "EnemyM", "EnemyL" };
+        enemyObjects = new string[] { "EnemyS", "EnemyM", "EnemyL", "EnemyB" };
+        StageStart();
+    }
+
+    public void StageStart()
+    {
+        stageAnim.SetTrigger("On");
+        stageAnim.GetComponent<Text>().text = "Stage " + stage + "\nStart!";
+        clearAnim.GetComponent<Text>().text = "Stage " + stage + "\nClear!";
         ReadSpawnFile();
+
+        fadeAnim.SetTrigger("In");
+    }
+
+    public void StageEnd()
+    {
+        clearAnim.SetTrigger("On");
+
+        fadeAnim.SetTrigger("Out");
+
+        player.transform.position = playerPos.position;
+
+        stage++;
+        if (stage > 3)
+        {
+            GameOver();
+        }
+        else
+        {
+            Invoke("StageStart", 6);
+        }
     }
 
     void ReadSpawnFile()
@@ -39,7 +74,7 @@ public class EnemyManager : MonoBehaviour
         spawnIndex = 0;
         spawnEnd = false;
 
-        TextAsset textFile = Resources.Load("stage1") as TextAsset;
+        TextAsset textFile = Resources.Load("Stage " + stage) as TextAsset;
         StringReader stringReader = new StringReader(textFile.text);
 
         while (stringReader != null)
@@ -97,6 +132,9 @@ public class EnemyManager : MonoBehaviour
             case "L":
                 enemyIndex = 2;
                 break;
+            case "B":
+                enemyIndex = 3;
+                break;
         }
         int enemySpot = spawnList[spawnIndex].point;
 
@@ -107,6 +145,7 @@ public class EnemyManager : MonoBehaviour
         Enemy enemyStat = enemy.GetComponent<Enemy>();
         enemyStat.player = player;
         enemyStat.objectManager = objectManager;
+        enemyStat.enemyMgr = this;
 
         if (enemySpot == 5 || enemySpot == 6)
         {
@@ -172,6 +211,15 @@ public class EnemyManager : MonoBehaviour
         {
             boomImage[i].color = new Color(1, 1, 1, 1);
         }
+    }
+
+    public void CallExplosion(Vector3 pos, string type)
+    {
+        GameObject explosion = objectManager.MakeObj("Explosion");
+        Explosion explosionStat = explosion.GetComponent<Explosion>();
+
+        explosion.transform.position = pos;
+        explosionStat.StartExplosion(type);
     }
 
     public void GameOver()

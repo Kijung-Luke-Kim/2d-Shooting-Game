@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     bool isTouchRight;
     public bool isAttacked;
     public bool isBoomTime;
+    public bool isRespawnTime;
 
     public GameObject bulletObj1;
     public GameObject bulletObj2;
@@ -31,15 +32,44 @@ public class Player : MonoBehaviour
     public ObjectManager objectManager;
 
     public GameObject[] followers;
+    SpriteRenderer spriteRenderer;
+
+    public bool[] joyControl;
+    public bool isControl;
+    public bool isButtonA;
+    public bool isButtonB;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
-    // Start is called before the first frame update
-    void Start()
+
+    private void OnEnable()
     {
-        
+        Unbeatable();
+        Invoke("Unbeatable", 3f);
+    }
+
+    void Unbeatable()
+    {
+        isRespawnTime = !isRespawnTime;
+        if (isRespawnTime)
+        {
+            spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+            for (int i = 0; i < followers.Length; i++)
+            {
+                followers[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+            }
+        }
+        else
+        {
+            spriteRenderer.color = new Color(1, 1, 1, 1);
+            for (int i = 0; i < followers.Length; i++)
+            {
+                followers[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -53,8 +83,9 @@ public class Player : MonoBehaviour
 
     private void Boom()
     {
-        if (!Input.GetButton("Fire2"))
-            return;
+        //if (!Input.GetButton("Fire2"))
+        //    return;
+        if (!isButtonB) return;
         if (isBoomTime)
             return;
         if (boom == 0)
@@ -116,12 +147,28 @@ public class Player : MonoBehaviour
         curFireDelay += Time.deltaTime;
     }
 
+    public void ButtonADown()
+    {
+        isButtonA = true;
+    }
+
+    public void ButtonAUp()
+    {
+        isButtonA = false;
+    }
+
+    public void ButtonBDown()
+    {
+        isButtonB = true;
+    }
+
     private void Fire()
     {
-        if (!Input.GetButton("Fire1"))
-        {
-            return;
-        }
+        //if (!Input.GetButton("Fire1"))
+        //{
+        //    return;
+        //}
+        if (!isButtonA) return;
 
         if (curFireDelay < maxFireDelay)
         {
@@ -168,16 +215,46 @@ public class Player : MonoBehaviour
         curFireDelay = 0;
     }
 
+    public void JoyPanel(int type)
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            joyControl[i] = i == type;
+        }
+    }
+
+    public void JoyDown()
+    {
+        isControl = true;
+    }
+
+    public void JoyUp()
+    {
+        isControl = false;
+    }
+
     private void Move()
     {
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
+        //float h = Input.GetAxisRaw("Mouse X");
+        //float v = Input.GetAxisRaw("Mouse Y");
 
-        if ((h > 0 && isTouchRight) || (h < 0 && isTouchLeft))
+        if (joyControl[0]) { h = -1; v = 1; }
+        if (joyControl[1]) { h = 0; v = 1; }
+        if (joyControl[2]) { h = 1; v = 1; }
+        if (joyControl[3]) { h = -1; v = 0; }
+        if (joyControl[4]) { h = 0; v = 0; }
+        if (joyControl[5]) { h = 1; v = 0; }
+        if (joyControl[6]) { h = -1; v = -1; }
+        if (joyControl[7]) { h = 0; v = -1; }
+        if (joyControl[8]) { h = 1; v = -1; }
+
+        if ((h > 0 && isTouchRight) || (h < 0 && isTouchLeft) || !isControl)
         {
             h = 0;
         }
-        if ((v > 0 && isTouchTop) || (v < 0 && isTouchBottom))
+        if ((v > 0 && isTouchTop) || (v < 0 && isTouchBottom) || !isControl)
         {
             v = 0;
         }
@@ -213,10 +290,15 @@ public class Player : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBullet")
         {
+            if (isRespawnTime)
+                return;
+
             if (isAttacked) return;
             isAttacked = true;
             life--;
             enemyMgr.UpdateLifeIcon(life);
+            enemyMgr.CallExplosion(transform.position, "P");
+
             if (life == 0)
             {
                 enemyMgr.GameOver();
@@ -227,7 +309,7 @@ public class Player : MonoBehaviour
             }
             
             gameObject.SetActive(false);
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
         else if (collision.gameObject.tag == "Item")
         {
@@ -256,7 +338,7 @@ public class Player : MonoBehaviour
                         score += 500;
                     break;
             }
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 
