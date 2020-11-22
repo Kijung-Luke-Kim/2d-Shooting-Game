@@ -41,6 +41,8 @@ public class EnemyManager : MonoBehaviour
 
     public void StageStart()
     {
+        player.GetComponent<Player>().life = 3;
+        player.GetComponent<Player>().enemyMgr.UpdateLifeIcon(player.GetComponent<Player>().life);
         stageAnim.SetTrigger("On");
         stageAnim.GetComponent<Text>().text = "Stage " + stage + "\nStart!";
         clearAnim.GetComponent<Text>().text = "Stage " + stage + "\nClear!";
@@ -230,5 +232,9 @@ public class EnemyManager : MonoBehaviour
     public void GameRetry()
     {
         SceneManager.LoadScene("GameScene");
+    }
+    public void GoToStart()
+    {
+        SceneManager.LoadScene("StartScene");
     }
 }

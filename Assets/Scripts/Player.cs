@@ -237,8 +237,15 @@ public class Player : MonoBehaviour
     {
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
-        //float h = Input.GetAxisRaw("Mouse X");
-        //float v = Input.GetAxisRaw("Mouse Y");
+        //float h = 0;
+        //float v = 0;
+        //if (Input.GetMouseButton(0))
+        //{
+        //    h = Input.GetAxisRaw("Mouse X");
+        //    v = Input.GetAxisRaw("Mouse Y");
+        //}
+
+        if (h != 0 || v != 0) isControl = true;
 
         if (joyControl[0]) { h = -1; v = 1; }
         if (joyControl[1]) { h = 0; v = 1; }
