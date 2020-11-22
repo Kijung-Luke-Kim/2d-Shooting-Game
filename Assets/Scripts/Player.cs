@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
     public EnemyManager enemyMgr;
     public ObjectManager objectManager;
 
+    public GameObject[] followers;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -146,7 +148,7 @@ public class Player : MonoBehaviour
                 Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
                 rigidL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
-            case 3:
+            default:
                 GameObject bulletCC = objectManager.MakeObj("BulletPlayerB");
                 bulletCC.transform.position = transform.position;
                 Rigidbody2D rigidCC = bulletCC.GetComponent<Rigidbody2D>();
@@ -162,7 +164,6 @@ public class Player : MonoBehaviour
                 Rigidbody2D rigidLL = bulletLL.GetComponent<Rigidbody2D>();
                 rigidLL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
-
         }
         curFireDelay = 0;
     }
@@ -237,10 +238,13 @@ public class Player : MonoBehaviour
                     score += 1000;
                     break;
                 case "Power":
-                    if (fireLevel < maxFireLevel)
-                        fireLevel++;
-                    else
+                    if (fireLevel == maxFireLevel)
                         score += 500;
+                    else
+                    {
+                        fireLevel++;
+                        AddFollower();
+                    }
                     break;
                 case "Boom":
                     if (boom < maxBoom)
@@ -255,6 +259,23 @@ public class Player : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
+
+    private void AddFollower()
+    {
+        if (fireLevel == 4)
+        {
+            followers[0].SetActive(true);
+        }
+        else if (fireLevel == 5)
+        {
+            followers[1].SetActive(true);
+        }
+        else if (fireLevel == 6)
+        {
+            followers[2].SetActive(true);
+        }
+    }
+
     void OffBoomEffect()
     {
         boomEffect.SetActive(false);

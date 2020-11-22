@@ -111,8 +111,7 @@ public class Enemy : MonoBehaviour
 
             OnHit(bullet.damage);
             //Destroy(collision.gameObject);
-            gameObject.SetActive(false);
-            transform.rotation = Quaternion.identity;
+            collision.gameObject.SetActive(false);
         }
     }
 
