@@ -66,6 +66,7 @@ public class EnemyManager : MonoBehaviour
         }
         else
         {
+            //objectManager.InactivateAll();
             Invoke("StageStart", 6);
         }
     }

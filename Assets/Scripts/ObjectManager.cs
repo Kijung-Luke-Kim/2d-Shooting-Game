@@ -274,4 +274,23 @@ public class ObjectManager : MonoBehaviour
         }
         return targetPool;
     }
+    public void InactivateAll()
+    {
+        for (int i = 0; i < enemyL.Length; i++)
+        {
+            enemyL[i].SetActive(false);
+        }
+        for (int i = 0; i < enemyM.Length; i++)
+        {
+            enemyM[i].SetActive(false);
+        }
+        for (int i = 0; i < enemyS.Length; i++)
+        {
+            enemyS[i].SetActive(false);
+        }
+        for (int i = 0; i < enemyB.Length; i++)
+        {
+            enemyB[i].SetActive(false);
+        }
+    }
 }
